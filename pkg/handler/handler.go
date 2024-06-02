@@ -16,33 +16,37 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New() // Инициализация роутера
 
-	// @todo продумать эндпоинты для проекта
-	//Эндопинты для авторизации
-	auth := router.Group("/auth") // Группировка по маршрутам
+	auth := router.Group("/auth")
 	{
-		auth.POST("/sign-up") //, h.signUp) // Эндроинт для регистрации
-		auth.POST("/sign-in") //, h.signIn) // Эндпоинт для авторизации
+		auth.POST("/sign-in", h.signIn)
 	}
 
-	// Определение эндпоинтов для операций над файлами
-	/*
-		files := router.Group("/files", h.userIdentity)
-		{
-			files.GET("/", h.getFiles)         // Список всех файлов
-			files.POST("/", h.loadFile)        // Загрузка файла
-			files.GET("/:id", h.getFileById)   // Получение файла по id
-			files.POST("/:id", h.sendFile)     // Отправка файла
-			files.PATCH("/:id", h.editFile)    // Редактирование файла
-			files.DELETE("/:id", h.deleteFile) // Удаление файла
+	users := router.Group("/users", h.userIdentity)
+	{
+		users.POST("/", h.signUp)
+		users.GET("/", h.getUsers)
+		users.GET("/:id", h.getUserById)
+		users.PUT("/:id", h.updateUser)
+		users.DELETE(":id", h.deleteUser)
 
-			// Определение эндпоинтов для операций над комментариями
-			comments := files.Group("/:id/comments")
-			{
-				comments.GET("/", h.getComments)    // Получение комментариев файла
-				comments.POST("/", h.createComment) // Создание комментария под файлом
-			}
+		categories := users.Group("/:id/categories")
+		{
+			categories.GET("/", h.getCategories)
+			categories.POST("/", h.createCategory)
+			categories.GET("/:id", h.getCategoryById)
+			categories.PUT("/:id", h.updateCategory)
+			categories.DELETE("/:id", h.deleteCategory)
 		}
-	*/
+
+		articles := users.Group("/:id/articles")
+		{
+			articles.GET("/", h.getArticles)
+			articles.POST("/", h.createArticle)
+			articles.GET("/:id", h.getArticle)
+			articles.PUT("/:id", h.updateArticle)
+			articles.DELETE("/:id", h.deleteArticle)
+		}
+	}
 
 	return router
 }
