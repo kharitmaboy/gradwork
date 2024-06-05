@@ -11,26 +11,28 @@ type Authorization interface {
 	ParseToken(token string) (int, error)
 }
 
-type Users interface {
+type User interface {
 	GetUsers() ([]gradwork.User, error)
+	GetUserById(userId int) (gradwork.User, error)
+	UpdateUser(usetId int, input gradwork.UpdateUserInput) error
 }
 
-type Categories interface {
+type Category interface {
 }
 
-type Articles interface {
+type Article interface {
 }
 
 type Service struct {
 	Authorization
-	Users
-	Categories
-	Articles
+	User
+	Category
+	Article
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
-		Users:         NewUserService(repos.Users),
+		User:         NewUserService(repos.User),
 	}
 }

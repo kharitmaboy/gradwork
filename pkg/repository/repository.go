@@ -16,26 +16,28 @@ type Authorization interface {
 	GetUser(username, password string) (gradwork.User, error)
 }
 
-type Users interface {
+type User interface {
 	GetUsers() ([]gradwork.User, error)
+	GetUserById(userId int) (gradwork.User, error)
+	UpdateUser(userId int, input gradwork.UpdateUserInput) error
 }
 
-type Categories interface {
+type Category interface {
 }
 
-type Articles interface {
+type Article interface {
 }
 
 type Repository struct {
 	Authorization
-	Users
-	Categories
-	Articles
+	User
+	Category
+	Article
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
-		Users:         NewUserPostgres(db),
+		User:         NewUserPostgres(db),
 	}
 }

@@ -6,13 +6,25 @@ import (
 )
 
 type UserService struct {
-	repos repository.Users
+	repos repository.User
 }
 
-func NewUserService(repos repository.Users) *UserService {
+func NewUserService(repos repository.User) *UserService {
 	return &UserService{repos: repos}
 }
 
 func (s *UserService) GetUsers() ([]gradwork.User, error) {
 	return s.repos.GetUsers()
+}
+
+func (s *UserService) GetUserById(userId int) (gradwork.User, error) {
+	return s.repos.GetUserById(userId)
+}
+
+func (s *UserService) UpdateUser(userId int, input gradwork.UpdateUserInput) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
+
+	return s.repos.UpdateUser(userId, input)
 }
