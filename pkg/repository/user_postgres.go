@@ -66,15 +66,27 @@ func (r *UserPostgres) UpdateUser(userId int, input gradwork.UpdateUserInput) er
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s u SET %s WHERE u.id = $%d",
-		usersTable, setQuery, argId)
+	query := fmt.Sprintf("UPDATE %s u SET %s WHERE u.id = $%d", usersTable, setQuery, argId)
 	args = append(args, userId)
 
 	_, err := r.db.Exec(query, args...)
 	return err
 }
 
-func setInputValue(setValues []string, args []interface{}, argId *int, filedName string, field interface{}) ([]string, []interface{}) {
+func (r *UserPostgres) DeleteUser(userId int) error {
+	query := fmt.Sprintf("DELETE FROM %s u WHERE u.id = $1", usersTable)
+	_, err := r.db.Exec(query, userId)
+
+	return err
+}
+
+func setInputValue(
+	setValues []string,
+	args []interface{},
+	argId *int,
+	filedName string,
+	field interface{},
+) ([]string, []interface{}) {
 	setValues = append(setValues, filedName+fmt.Sprintf("=$%d", *argId))
 	args = append(args, field)
 	*argId++

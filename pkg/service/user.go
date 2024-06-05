@@ -25,6 +25,11 @@ func (s *UserService) UpdateUser(userId int, input gradwork.UpdateUserInput) err
 	if err := input.Validate(); err != nil {
 		return err
 	}
+	*input.Password = GeneratePasswordHash(*input.Password)
 
 	return s.repos.UpdateUser(userId, input)
+}
+
+func (s *UserService) DeleteUser(userId int) error {
+	return s.repos.DeleteUser(userId)
 }

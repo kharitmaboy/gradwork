@@ -30,13 +30,13 @@ func NewAuthService(repos repository.Authorization) *AuthService {
 }
 
 func (s *AuthService) CreateUser(user gradwork.User) (int, error) {
-	user.Password = generatePasswordHash(user.Password)
+	user.Password = GeneratePasswordHash(user.Password)
 
 	return s.repos.CreateUser(user)
 }
 
 func (s *AuthService) GenerateToken(username, password string) (string, error) {
-	user, err := s.repos.GetUser(username, generatePasswordHash(password))
+	user, err := s.repos.GetUser(username, GeneratePasswordHash(password))
 	if err != nil {
 		return "", err
 	}
@@ -72,7 +72,7 @@ func (s *AuthService) ParseToken(accessToken string) (int, error) {
 	return claims.UserId, nil
 }
 
-func generatePasswordHash(password string) string {
+func GeneratePasswordHash(password string) string {
 	hash := sha1.New()
 	hash.Write([]byte(password))
 

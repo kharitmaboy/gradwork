@@ -14,7 +14,8 @@ type Authorization interface {
 type User interface {
 	GetUsers() ([]gradwork.User, error)
 	GetUserById(userId int) (gradwork.User, error)
-	UpdateUser(usetId int, input gradwork.UpdateUserInput) error
+	UpdateUser(userId int, input gradwork.UpdateUserInput) error
+	DeleteUser(userId int) error
 }
 
 type Category interface {

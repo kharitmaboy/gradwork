@@ -62,7 +62,23 @@ func (h *Handler) updateUser(c *gin.Context) {
 	})
 }
 
-func (h *Handler) deleteUser(c *gin.Context)      {}
+func (h *Handler) deleteUser(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "user not found")
+		return
+	}
+
+	if err := h.services.User.DeleteUser(id); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}
+
 func (h *Handler) getCategories(c *gin.Context)   {}
 func (h *Handler) createCategory(c *gin.Context)  {}
 func (h *Handler) getCategoryById(c *gin.Context) {}
