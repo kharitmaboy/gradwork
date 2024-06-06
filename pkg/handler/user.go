@@ -78,14 +78,3 @@ func (h *Handler) deleteUser(c *gin.Context) {
 		Status: "ok",
 	})
 }
-
-func (h *Handler) getCategories(c *gin.Context)   {}
-func (h *Handler) createCategory(c *gin.Context)  {}
-func (h *Handler) getCategoryById(c *gin.Context) {}
-func (h *Handler) updateCategory(c *gin.Context)  {}
-func (h *Handler) deleteCategory(c *gin.Context)  {}
-func (h *Handler) getArticles(c *gin.Context)     {}
-func (h *Handler) createArticle(c *gin.Context)   {}
-func (h *Handler) getArticle(c *gin.Context)      {}
-func (h *Handler) updateArticle(c *gin.Context)   {}
-func (h *Handler) deleteArticle(c *gin.Context)   {}

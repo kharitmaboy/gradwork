@@ -29,23 +29,29 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		users.PATCH("/:id", h.updateUser)
 		users.DELETE(":id", h.deleteUser)
 
-		categories := users.Group("/:id/categories")
-		{
-			categories.GET("/", h.getCategories)
-			categories.POST("/", h.createCategory)
-			categories.GET("/:id", h.getCategoryById)
-			categories.PUT("/:id", h.updateCategory)
-			categories.DELETE("/:id", h.deleteCategory)
-		}
-
 		articles := users.Group("/:id/articles")
 		{
 			articles.GET("/", h.getArticles)
 			articles.POST("/", h.createArticle)
-			articles.GET("/:id", h.getArticle)
+			articles.GET("/:id", h.getArticleById)
 			articles.PUT("/:id", h.updateArticle)
 			articles.DELETE("/:id", h.deleteArticle)
 		}
+	}
+
+	categories := router.Group("/categories")
+	{
+		categories.GET("/", h.getCategories)
+		categories.POST("/", h.createCategory)
+		categories.GET("/:id", h.getCategoryById)
+		categories.PUT("/:id", h.updateCategory)
+		categories.DELETE("/:id", h.deleteCategory)
+
+		//articles := categories.Group("/:id/articles")
+		//{
+		//	articles.GET("/", h.getArticlesInCategory)
+		//	articles.GET("/:id", h.getArticleByIdInCategory)
+		//}
 	}
 
 	return router

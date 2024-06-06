@@ -19,6 +19,11 @@ type User interface {
 }
 
 type Category interface {
+	GetCategories() ([]gradwork.Category, error)
+	CreateCategory(category gradwork.Category) (int, error)
+	GetCategoryById(categoryId int) (gradwork.Category, error)
+	UpdateCategory(categoryId int, input gradwork.UpdateCategoryInput) error
+	DeleteCategory(categoryId int) error
 }
 
 type Article interface {
@@ -34,6 +39,8 @@ type Service struct {
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
-		User:         NewUserService(repos.User),
+		User:          NewUserService(repos.User),
+		Category:      NewCategoryService(repos.Category),
+		Article:       NewArticleService(repos.Article),
 	}
 }

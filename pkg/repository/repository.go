@@ -24,6 +24,11 @@ type User interface {
 }
 
 type Category interface {
+	GetCategories() ([]gradwork.Category, error)
+	CreateCategory(category gradwork.Category) (int, error)
+	GetCategoryById(categoryId int) (gradwork.Category, error)
+	UpdateCategory(categoryId int, input gradwork.UpdateCategoryInput) error
+	DeleteCategory(categoryId int) error
 }
 
 type Article interface {
@@ -39,6 +44,8 @@ type Repository struct {
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
-		User:         NewUserPostgres(db),
+		User:          NewUserPostgres(db),
+		Category:      NewCategoryPostgres(db),
+		Article:       NewArticlePostgres(db),
 	}
 }

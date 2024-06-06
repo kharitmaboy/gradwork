@@ -1,6 +1,9 @@
 package gradwork
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 type Category struct {
 	Id   int    `json:"id" db:"id"`
@@ -14,4 +17,16 @@ type Article struct {
 	Date       time.Time `json:"date" binding:"required"`
 	UserId     int
 	CategoryId int
+}
+
+type UpdateCategoryInput struct {
+	Name *string `json:"name"`
+}
+
+func (i UpdateCategoryInput) Validate() error {
+	if i.Name == nil {
+		return errors.New("invalid update structure")
+	}
+
+	return nil
 }
