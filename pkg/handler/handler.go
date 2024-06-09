@@ -18,41 +18,65 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
+		auth.POST("/sign-up", h.adminIdentity, h.signUp)
 		auth.POST("/sign-in", h.signIn)
 	}
 
-	users := router.Group("/users", h.userIdentity)
+	admin := router.Group("/admin", h.adminIdentity)
 	{
-		users.POST("/", h.signUp)
-		users.GET("/", h.getUsers)
-		users.GET("/:id", h.getUserById)
-		users.PATCH("/:id", h.updateUser)
-		users.DELETE(":id", h.deleteUser)
-
-		articles := users.Group("/:id/articles")
+		users := admin.Group("/users")
 		{
-			articles.GET("/", h.getArticles)
-			articles.POST("/", h.createArticle)
-			articles.GET("/:id", h.getArticleById)
-			articles.PUT("/:id", h.updateArticle)
+			users.GET("/", h.getUsers)
+			users.GET("/:id", h.getUserById)
+			users.PATCH("/:id", h.updateUser)
+			users.DELETE(":id", h.deleteUser)
+		}
+
+		categories := admin.Group("/categories")
+		{
+			categories.POST("/", h.createCategory)
+			categories.PATCH("/:id", h.updateCategory)
+			categories.DELETE("/:id", h.deleteCategory)
+		}
+
+		articles := admin.Group("/articles")
+		{
+			articles.PATCH("/:id", h.updateArticle)
 			articles.DELETE("/:id", h.deleteArticle)
+		}
+	}
+
+	user := router.Group("/user", h.userIdentity)
+	{
+		user.GET("/", h.getSelf)
+		user.PATCH("/", h.updateSelf)
+
+		articles := user.Group("/articles")
+		{
+			articles.GET("/", h.getSelfArticles)
+			articles.POST("/", h.createArticle)
+			articles.PATCH("/:id", h.updateSelfArticle)
+			articles.DELETE("/:id", h.deleteSelfArticle)
 		}
 	}
 
 	categories := router.Group("/categories")
 	{
 		categories.GET("/", h.getCategories)
-		categories.POST("/", h.createCategory)
 		categories.GET("/:id", h.getCategoryById)
-		categories.PUT("/:id", h.updateCategory)
-		categories.DELETE("/:id", h.deleteCategory)
 
-		//articles := categories.Group("/:id/articles")
-		//{
-		//	articles.GET("/", h.getArticlesInCategory)
-		//	articles.GET("/:id", h.getArticleByIdInCategory)
-		//}
+		articles := categories.Group("/:id/articles")
+		{
+			articles.GET("/", h.getArticlesInCategory)
+		}
 	}
+
+	articles := router.Group("/articles")
+	{
+		articles.GET("/", h.getArticles)
+		articles.GET("/:id", h.getArticleById)
+	}
+
 
 	return router
 }

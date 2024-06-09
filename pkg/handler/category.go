@@ -17,6 +17,22 @@ func (h *Handler) getCategories(c *gin.Context) {
 	c.JSON(http.StatusOK, categories)
 }
 
+func (h *Handler) getCategoryById(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "category not found")
+		return
+	}
+
+	category, err := h.services.Category.GetCategoryById(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, category)
+}
+
 func (h *Handler) createCategory(c *gin.Context) {
 	input := gradwork.Category{}
 	if err := c.BindJSON(&input); err != nil {
@@ -33,22 +49,6 @@ func (h *Handler) createCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
 	})
-}
-
-func (h *Handler) getCategoryById(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "category not found")
-		return
-	}
-
-	category, err := h.services.Category.GetCategoryById(id)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, category)
 }
 
 func (h *Handler) updateCategory(c *gin.Context) {

@@ -22,7 +22,7 @@ type UpdateUserInput struct {
 }
 
 func (i UpdateUserInput) Validate() error {
-	if i.Username == nil || i.Password == nil || i.Status == nil {
+	if i.Username == nil && i.Password == nil && i.Name == nil && i.Surname == nil && i.Email == nil && i.Status == nil {
 		return errors.New("invalid update structure")
 	}
 

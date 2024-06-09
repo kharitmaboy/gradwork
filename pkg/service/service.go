@@ -8,7 +8,7 @@ import (
 type Authorization interface {
 	CreateUser(user gradwork.User) (int, error)
 	GenerateToken(username, password string) (string, error)
-	ParseToken(token string) (int, error)
+	ParseToken(token string) (int, string, error)
 }
 
 type User interface {
@@ -27,6 +27,15 @@ type Category interface {
 }
 
 type Article interface {
+	GetArticles() ([]gradwork.Article, error)
+	GetArticleById(articleId int) (gradwork.Article, error)
+	GetSelfArticles(userId int) ([]gradwork.Article, error)
+	GetArticlesInCategory(categoryId int) ([]gradwork.Article, error)
+	CreateArticle(userId int, article gradwork.Article) (int, error)
+	UpdateArticle(articleId int, input gradwork.UpdateArticleInput) error
+	UpdateSelfArticle(articleId, userId int, input gradwork.UpdateArticleInput) error
+	DeleteArticle(articleId int) error
+	DeleteSelfArticle(articleId, userId int) error
 }
 
 type Service struct {

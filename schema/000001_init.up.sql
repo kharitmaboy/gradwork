@@ -1,4 +1,4 @@
-CREATE TYPE status AS ENUM ('admin', 'user', 'noname');
+CREATE TYPE status AS ENUM ('admin', 'user');
 
 CREATE TABLE users
 (
@@ -8,7 +8,7 @@ CREATE TABLE users
     name          varchar(31),
     surname       varchar(31),
     email         varchar(63),
-    status        status       not null default 'noname'
+    status        status       not null
 );
 
 CREATE TABLE categories

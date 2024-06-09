@@ -11,14 +11,15 @@ import (
 )
 
 const (
-	salt = "MPEIGraduateWorkSaltForPass"
+	salt       = "MPEIGraduateWorkSaltForPass"
 	tokenTTL   = 24 * time.Hour
-	signingKey = "SaltForTokenA0820gradowrk"
+	signingKey = "SaltForTokenA0820gradwork"
 )
 
 type tokenClaims struct {
 	jwt.StandardClaims
 	UserId int `json:"user_id"`
+	UserStatus string `json:"status"`
 }
 
 type AuthService struct {
@@ -47,12 +48,13 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 			IssuedAt:  time.Now().Unix(),
 		},
 		user.Id,
+		user.Status,
 	})
 
 	return token.SignedString([]byte(signingKey))
 }
 
-func (s *AuthService) ParseToken(accessToken string) (int, error) {
+func (s *AuthService) ParseToken(accessToken string) (int, string, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("invalid signing method")
@@ -61,15 +63,15 @@ func (s *AuthService) ParseToken(accessToken string) (int, error) {
 		return []byte(signingKey), nil
 	})
 	if err != nil {
-		return 0, err
+		return 0, "", err
 	}
 
 	claims, ok := token.Claims.(*tokenClaims)
 	if !ok {
-		return 0, errors.New("token claims are not of type *tokenClaims")
+		return 0, "", errors.New("token claims are not of type *tokenClaims")
 	}
 
-	return claims.UserId, nil
+	return claims.UserId, claims.UserStatus, nil
 }
 
 func GeneratePasswordHash(password string) string {
