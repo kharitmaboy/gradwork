@@ -29,7 +29,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			users.GET("/", h.getUsers)
 			users.GET("/:id", h.getUserById)
 			users.PATCH("/:id", h.updateUser)
-			users.DELETE(":id", h.deleteUser)
+			users.DELETE("/:id", h.deleteUser)
 		}
 
 		categories := admin.Group("/categories")

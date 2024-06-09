@@ -8,26 +8,30 @@ import (
 )
 
 const (
-	authorizationHeader = "Authorization"
-	userCtx             = "userId"
-	userStatusCtx       = "userStatus"
+	authorizationHeader   = "Authorization"
+	userCtx               = "userId"
+	userStatusCtx         = "userStatus"
+	statusUnauthorizedCtx = "unauthorized"
 )
 
 func (h *Handler) userIdentity(c *gin.Context) {
 	header := c.GetHeader(authorizationHeader)
 	if header == "" {
+		c.Set(statusUnauthorizedCtx, true)
 		newErrorResponse(c, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 
 	headerParts := strings.Split(header, " ")
 	if len(headerParts) != 2 {
+		c.Set(statusUnauthorizedCtx, true)
 		newErrorResponse(c, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 
 	userId, userStatus, err := h.services.Authorization.ParseToken(headerParts[1])
 	if err != nil {
+		c.Set(statusUnauthorizedCtx, true)
 		newErrorResponse(c, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
@@ -38,6 +42,11 @@ func (h *Handler) userIdentity(c *gin.Context) {
 
 func (h *Handler) adminIdentity(c *gin.Context) {
 	h.userIdentity(c)
+	_, ok := c.Get(statusUnauthorizedCtx)
+	if ok {
+		return
+	}
+
 	status, ok := c.Get(userStatusCtx)
 	if !ok {
 		newErrorResponse(c, http.StatusInternalServerError, "user status not found")

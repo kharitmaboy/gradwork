@@ -18,7 +18,7 @@ func NewArticlePostgres(db *sqlx.DB) *ArticlePostgres {
 func (r *ArticlePostgres) GetArticles() ([]gradwork.Article, error) {
 	var articles []gradwork.Article
 
-	query := fmt.Sprintf("SELECT a.id, a.title, a.body, a.date, a.user_id, a.category_id FROM %s AS a", articlesTable)
+	query := fmt.Sprintf("SELECT a.id, a.title, a.body, cast(extract(epoch from a.date) AS int) AS date, a.user_id, a.category_id FROM %s AS a", articlesTable)
 	err := r.db.Select(&articles, query)
 
 	return articles, err
@@ -27,7 +27,7 @@ func (r *ArticlePostgres) GetArticles() ([]gradwork.Article, error) {
 func (r *ArticlePostgres) GetArticleById(articleId int) (gradwork.Article, error) {
 	var article gradwork.Article
 
-	query := fmt.Sprintf(`SELECT a.id, a.title, a.body, a.date, a.user_id, a.category_id 
+	query := fmt.Sprintf(`SELECT a.id, a.title, a.body, cast(extract(epoch from a.date) AS int) AS date, a.user_id, a.category_id 
 									FROM %s AS a WHERE a.id = $1`, articlesTable)
 	err := r.db.Get(&article, query, articleId)
 
@@ -37,7 +37,7 @@ func (r *ArticlePostgres) GetArticleById(articleId int) (gradwork.Article, error
 func (r *ArticlePostgres) GetSelfArticles(userId int) ([]gradwork.Article, error) {
 	var articles []gradwork.Article
 
-	query := fmt.Sprintf(`SELECT a.id, a.title, a.body, a.date, a.user_id, a.category_id 
+	query := fmt.Sprintf(`SELECT a.id, a.title, a.body, cast(extract(epoch from a.date) AS int) AS date, a.user_id, a.category_id 
 									FROM %s AS a WHERE a.user_id = $1`, articlesTable)
 	err := r.db.Select(&articles, query, userId)
 
@@ -47,7 +47,7 @@ func (r *ArticlePostgres) GetSelfArticles(userId int) ([]gradwork.Article, error
 func (r *ArticlePostgres) GetArticlesInCategory(categoryId int) ([]gradwork.Article, error) {
 	var articles []gradwork.Article
 
-	query := fmt.Sprintf(`SELECT a.id, a.title, a.body, a.date, a.user_id, a.category_id 
+	query := fmt.Sprintf(`SELECT a.id, a.title, a.body, cast(extract(epoch from a.date) AS int) AS date, a.user_id, a.category_id 
 									FROM %s AS a WHERE a.category_id = $1`, articlesTable)
 	err := r.db.Select(&articles, query, categoryId)
 
@@ -58,7 +58,7 @@ func (r *ArticlePostgres) CreateArticle(userId int, article gradwork.Article) (i
 	var id int
 
 	query := fmt.Sprintf(`INSERT INTO %s (title, body, date, user_id, category_id)
-									VALUES ($1, $2, $3, $4, $5) RETURNING id`, articlesTable)
+									VALUES ($1, $2, to_timestamp($3), $4, $5) RETURNING id`, articlesTable)
 	row := r.db.QueryRow(query, article.Title, article.Body, article.Date, userId, article.CategoryId)
 
 	if err := row.Scan(&id); err != nil {

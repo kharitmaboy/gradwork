@@ -27,7 +27,7 @@ func (r *CategoryPostgres) GetCategories() ([]gradwork.Category, error) {
 func (r *CategoryPostgres) CreateCategory(category gradwork.Category) (int, error) {
 	var id int
 
-	query := fmt.Sprintf("INSERT INTO %s name VALUES $1 RETURNING id", categoriesTable)
+	query := fmt.Sprintf("INSERT INTO %s (name) VALUES ($1) RETURNING id", categoriesTable)
 	row := r.db.QueryRow(query, category.Name)
 
 	if err := row.Scan(&id); err != nil {

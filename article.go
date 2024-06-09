@@ -2,7 +2,6 @@ package gradwork
 
 import (
 	"errors"
-	"time"
 )
 
 type Category struct {
@@ -11,12 +10,12 @@ type Category struct {
 }
 
 type Article struct {
-	Id         int       `json:"id" db:"id"`
-	Title      string    `json:"title" binding:"required"`
-	Body       string    `json:"body" binding:"required"`
-	Date       time.Time `json:"date" binding:"required"`
-	UserId     int
-	CategoryId int `json:"category_id" binding:"required"`
+	Id         int    `json:"id" db:"id"`
+	Title      string `json:"title" binding:"required"`
+	Body       string `json:"body" binding:"required"`
+	Date       int64  `json:"date" binding:"required"`
+	UserId     int    `json:"user_id" db:"user_id"`
+	CategoryId int    `json:"category_id" db:"category_id" binding:"required"`
 }
 
 type UpdateCategoryInput struct {
