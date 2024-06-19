@@ -1,4 +1,4 @@
-package gradwork
+package server
 
 import "errors"
 

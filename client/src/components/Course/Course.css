@@ -1,0 +1,12 @@
+.course-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(33.333% - 40px); /* Adjust this to control the number of courses per row */
+    box-sizing: border-box;
+}
+
+.course-item h3 {
+    margin-top: 0;
+}
