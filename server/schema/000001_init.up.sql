@@ -11,10 +11,18 @@ CREATE TABLE users
     status        status       not null
 );
 
+CREATE TABLE courses
+(
+    id          serial       not null unique,
+    name        varchar(31)  not null unique,
+    description varchar(255) not null
+);
+
 CREATE TABLE categories
 (
-    id   serial       not null unique,
-    name varchar(255) not null unique
+    id        serial                                        not null unique,
+    name      varchar(255)                                  not null unique,
+    course_id int references courses (id) on delete cascade not null
 );
 
 CREATE TABLE articles

@@ -1,6 +1,6 @@
 import './Footer.css'
 
-function Index() {
+function Footer() {
     return (
         <footer>
             <div className="container">
@@ -10,4 +10,4 @@ function Index() {
     )
 }
 
-export default Index
+export default Footer

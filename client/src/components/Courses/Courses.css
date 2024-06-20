@@ -1,0 +1,15 @@
+/* Стили для контента */
+main {
+    padding: 40px;
+}
+
+main h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}

@@ -32,6 +32,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			users.DELETE("/:id", h.deleteUser)
 		}
 
+		courses := admin.Group("/courses")
+		{
+			courses.POST("/", h.createCourse)
+			courses.PATCH("/:id", h.updateCourse)
+			courses.DELETE("/:id", h.deleteCourse)
+		}
+
 		categories := admin.Group("/categories")
 		{
 			categories.POST("/", h.createCategory)
@@ -60,6 +67,17 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		}
 	}
 
+	courses := router.Group("/courses")
+	{
+		courses.GET("/", h.getCourses)
+		courses.GET("/:id", h.getCourseById)
+
+		categories := courses.Group("/:id/categories")
+		{
+			categories.GET("/", h.getCategoriesInCourse)
+		}
+	}
+
 	categories := router.Group("/categories")
 	{
 		categories.GET("/", h.getCategories)
@@ -76,7 +94,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		articles.GET("/", h.getArticles)
 		articles.GET("/:id", h.getArticleById)
 	}
-
 
 	return router
 }

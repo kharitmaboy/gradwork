@@ -7,6 +7,7 @@ import (
 
 const (
 	usersTable      = "users"
+	coursesTable    = "courses"
 	categoriesTable = "categories"
 	articlesTable   = "articles"
 )
@@ -23,10 +24,19 @@ type User interface {
 	DeleteUser(userId int) error
 }
 
+type Course interface {
+	GetCourses() ([]gradwork.Course, error)
+	CreateCourse(course gradwork.Course) (int, error)
+	GetCourseById(courseId int) (gradwork.Course, error)
+	UpdateCourse(courseId int, input gradwork.UpdateCourseInput) error
+	DeleteCourse(courseId int) error
+}
+
 type Category interface {
 	GetCategories() ([]gradwork.Category, error)
 	CreateCategory(category gradwork.Category) (int, error)
 	GetCategoryById(categoryId int) (gradwork.Category, error)
+	GetCategoriesInCourse(courseId int) ([]gradwork.Category, error)
 	UpdateCategory(categoryId int, input gradwork.UpdateCategoryInput) error
 	DeleteCategory(categoryId int) error
 }
@@ -46,6 +56,7 @@ type Article interface {
 type Repository struct {
 	Authorization
 	User
+	Course
 	Category
 	Article
 }
@@ -54,6 +65,7 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		User:          NewUserPostgres(db),
+		Course:        NewCoursePostgres(db),
 		Category:      NewCategoryPostgres(db),
 		Article:       NewArticlePostgres(db),
 	}

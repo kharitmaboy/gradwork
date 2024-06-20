@@ -25,6 +25,10 @@ func (s *CategoryService) GetCategoryById(categoryId int) (gradwork.Category, er
 	return s.repos.GetCategoryById(categoryId)
 }
 
+func (s *CategoryService) GetCategoriesInCourse(courseId int) ([]gradwork.Category, error) {
+	return s.repos.GetCategoriesInCourse(courseId)
+}
+
 func (s *CategoryService) UpdateCategory(categoryId int, input gradwork.UpdateCategoryInput) error {
 	if err := input.Validate(); err != nil {
 		return err

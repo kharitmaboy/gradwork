@@ -7,56 +7,40 @@ import (
 	"strconv"
 )
 
-func (h *Handler) getCategories(c *gin.Context) {
-	categories, err := h.services.Category.GetCategories()
+func (h *Handler) getCourses(c *gin.Context) {
+	courses, err := h.services.Course.GetCourses()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, categories)
+	c.JSON(http.StatusOK, courses)
 }
 
-func (h *Handler) getCategoryById(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "category not found")
-		return
-	}
-
-	category, err := h.services.Category.GetCategoryById(id)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, category)
-}
-
-func (h *Handler) getCategoriesInCourse(c *gin.Context) {
+func (h *Handler) getCourseById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "course not found")
 		return
 	}
 
-	categories, err := h.services.Category.GetCategoriesInCourse(id)
+	course, err := h.services.Course.GetCourseById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, categories)
+	c.JSON(http.StatusOK, course)
 }
 
-func (h *Handler) createCategory(c *gin.Context) {
-	input := gradwork.Category{}
+func (h *Handler) createCourse(c *gin.Context) {
+	input := gradwork.Course{}
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	id, err := h.services.Category.CreateCategory(input)
+	id, err := h.services.Course.CreateCourse(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -67,20 +51,20 @@ func (h *Handler) createCategory(c *gin.Context) {
 	})
 }
 
-func (h *Handler) updateCategory(c *gin.Context) {
+func (h *Handler) updateCourse(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "category not found")
+		newErrorResponse(c, http.StatusBadRequest, "course not found")
 		return
 	}
 
-	input := gradwork.UpdateCategoryInput{}
+	input := gradwork.UpdateCourseInput{}
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := h.services.Category.UpdateCategory(id, input); err != nil {
+	if err := h.services.Course.UpdateCourse(id, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -90,14 +74,14 @@ func (h *Handler) updateCategory(c *gin.Context) {
 	})
 }
 
-func (h *Handler) deleteCategory(c *gin.Context) {
+func (h *Handler) deleteCourse(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "category not found")
+		newErrorResponse(c, http.StatusBadRequest, "course not found")
 		return
 	}
 
-	if err := h.services.Category.DeleteCategory(id); err != nil {
+	if err := h.services.Course.DeleteCourse(id); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}

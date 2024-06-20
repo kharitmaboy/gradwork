@@ -1,6 +1,7 @@
+import {Link} from 'react-router-dom';
 import './Header.css'
 
-function Index() {
+function Header() {
     return (
         <header>
             <div className="container">
@@ -9,18 +10,15 @@ function Index() {
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="#">Главная</a></li>
-                        <li><a href="#">Курсы</a></li>
-                        <li><a href="#">О нас</a></li>
-                        <li><a href="#">Контакты</a></li>
+                        <li><a href="/">Главная</a></li>
                     </ul>
                 </nav>
                 <div className="login-btn">
-                    <a href="#" className="btn">Вход в аккаунт</a>
+                    <Link to="/login" className="btn">Вход в аккаунт</Link>
                 </div>
             </div>
         </header>
     )
 }
 
-export default Index
+export default Header

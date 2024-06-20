@@ -51,7 +51,7 @@ func (h *Handler) getSelfArticles(c *gin.Context) {
 func (h *Handler) getArticlesInCategory(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "article not found")
+		newErrorResponse(c, http.StatusBadRequest, "category not found")
 		return
 	}
 

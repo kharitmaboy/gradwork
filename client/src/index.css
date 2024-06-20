@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -10,16 +14,4 @@ body {
   width: 80%;
   margin: 0 auto;
   padding: 20px;
-}
-
-/* Стили для контента */
-main h2 {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.course-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
 }

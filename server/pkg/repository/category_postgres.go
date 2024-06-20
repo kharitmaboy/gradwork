@@ -18,7 +18,7 @@ func NewCategoryPostgres(db *sqlx.DB) *CategoryPostgres {
 func (r *CategoryPostgres) GetCategories() ([]gradwork.Category, error) {
 	var categories []gradwork.Category
 
-	query := fmt.Sprintf("SELECT c.id, c.name FROM %s AS c", categoriesTable)
+	query := fmt.Sprintf("SELECT c.id, c.name, c.course_id FROM %s AS c", categoriesTable)
 	err := r.db.Select(&categories, query)
 
 	return categories, err
@@ -27,8 +27,8 @@ func (r *CategoryPostgres) GetCategories() ([]gradwork.Category, error) {
 func (r *CategoryPostgres) CreateCategory(category gradwork.Category) (int, error) {
 	var id int
 
-	query := fmt.Sprintf("INSERT INTO %s (name) VALUES ($1) RETURNING id", categoriesTable)
-	row := r.db.QueryRow(query, category.Name)
+	query := fmt.Sprintf("INSERT INTO %s (name, course_id) VALUES ($1, $2) RETURNING id", categoriesTable)
+	row := r.db.QueryRow(query, category.Name, category.CourseId)
 
 	if err := row.Scan(&id); err != nil {
 		return 0, err
@@ -40,10 +40,19 @@ func (r *CategoryPostgres) CreateCategory(category gradwork.Category) (int, erro
 func (r *CategoryPostgres) GetCategoryById(categoryId int) (gradwork.Category, error) {
 	var category gradwork.Category
 
-	query := fmt.Sprintf("SELECT c.id, c.name FROM %s AS c WHERE c.id = $1", categoriesTable)
+	query := fmt.Sprintf("SELECT c.id, c.name, c.course_id FROM %s AS c WHERE c.id = $1", categoriesTable)
 	err := r.db.Get(&category, query, categoryId)
 
 	return category, err
+}
+
+func (r *CategoryPostgres) GetCategoriesInCourse(courseId int) ([]gradwork.Category, error) {
+	var categories []gradwork.Category
+
+	query := fmt.Sprintf("SELECT c.id, c.name, c.course_id FROM %s AS c WHERE c.course_id = $1", categoriesTable)
+	err := r.db.Select(&categories, query, courseId)
+
+	return categories, err
 }
 
 func (r *CategoryPostgres) UpdateCategory(categoryId int, input gradwork.UpdateCategoryInput) error {
