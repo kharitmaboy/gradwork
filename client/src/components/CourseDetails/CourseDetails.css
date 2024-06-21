@@ -1,34 +1,19 @@
 .course-details-container {
-    background-color: #fff;
     padding: 20px;
+    margin: 20px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    max-width: 800px;
+    background-color: #f9f9f9;
 }
 
 .course-details-container h2 {
-    margin-bottom: 10px;
-}
-
-.course-details-container p {
     margin-bottom: 20px;
 }
 
-.course-details-container h3 {
-    margin-top: 30px;
-    margin-bottom: 10px;
-}
-
 .course-details-container ul {
-    list-style-type: none;
     padding: 0;
 }
 
 .course-details-container li {
-    margin-bottom: 15px;
-}
-
-.course-details-container li h4 {
-    margin-bottom: 5px;
+    list-style: none;
 }

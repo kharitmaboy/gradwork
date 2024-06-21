@@ -6,7 +6,7 @@ function Header() {
         <header>
             <div className="container">
                 <div className="logo">
-                    <h1>Учебный Портал</h1>
+                    <h1><a href="/">Учебный Портал</a></h1>
                 </div>
                 <nav>
                     <ul>

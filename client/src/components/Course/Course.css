@@ -3,10 +3,17 @@
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex: 1 1 calc(33.333% - 40px); /* Adjust this to control the number of courses per row */
+    flex: 1 1 calc(33.333% - 40px);
     box-sizing: border-box;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .course-item h3 {
     margin-top: 0;
+}
+
+.course-item:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
 }

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
+import Category from "../Category";
 import './CourseDetails.css';
 
 function CourseDetails() {
@@ -13,7 +14,7 @@ function CourseDetails() {
 
     useEffect(() => {
         if (!location.state) {
-            fetch(`/courses`)
+            fetch(`/courses/${courseId}`)
                 .then(response => response.json())
                 .then(data => setCourse(data))
                 .catch(error => console.error('Error fetching course details:', error));
@@ -40,9 +41,7 @@ function CourseDetails() {
             <h3>Разделы курса</h3>
             <ul>
                 {category.map(category => (
-                    <li key={category.id}>
-                        <h4>{category.name}</h4>
-                    </li>
+                    <Category id={category.id} name={category.name} />
                 ))}
             </ul>
         </div>
