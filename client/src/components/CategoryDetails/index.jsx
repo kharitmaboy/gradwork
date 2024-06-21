@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {useLocation, useParams} from 'react-router-dom';
+import {useLocation, useParams, Link} from 'react-router-dom';
 import './CategoryDetails.css';
 
 function CategoryDetails() {
@@ -38,8 +38,9 @@ function CategoryDetails() {
             <ul>
                 {article.map(article => (
                     <li key={article.id} className="article">
-                        <h4>{article.title}</h4>
-                        <p>{article.body}</p>
+                        <Link to={`/articles/${article.id}`}>
+                            <h4>{article.title}</h4>
+                        </Link>
                     </li>
                 ))}
             </ul>

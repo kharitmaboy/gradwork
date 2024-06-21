@@ -1,24 +1,39 @@
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import './Header.css'
+import AuthContext from '../../AuthContext';
+import Cookies from 'js-cookie';
+import './Header.css';
 
 function Header() {
+    const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
+
+    const handleLogout = () => {
+        Cookies.remove('access_token');
+        setIsAuthenticated(false);
+    };
+
     return (
-        <header>
+        <header className="header">
             <div className="container">
-                <div className="logo">
-                    <h1><a href="/">Учебный Портал</a></h1>
-                </div>
+                <h1>Учебный портал</h1>
                 <nav>
                     <ul>
-                        <li><a href="/">Главная</a></li>
+                        <li><Link to="/">Главная</Link></li>
+                        {isAuthenticated ? (
+                            <>
+                                <li><Link to="/profile">Личный кабинет</Link></li>
+                                <li>
+                                    <button onClick={handleLogout}>Выйти</button>
+                                </li>
+                            </>
+                        ) : (
+                            <li><Link to="/login">Вход в аккаунт</Link></li>
+                        )}
                     </ul>
                 </nav>
-                <div className="login-btn">
-                    <Link to="/login" className="btn">Вход в аккаунт</Link>
-                </div>
             </div>
         </header>
-    )
+    );
 }
 
-export default Header
+export default Header;

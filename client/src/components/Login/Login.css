@@ -1,20 +1,20 @@
 .login-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     margin: 50px auto;
-    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .login-container h2 {
+    text-align: center;
     margin-bottom: 20px;
 }
 
 .form-group {
     margin-bottom: 15px;
-    text-align: left;
 }
 
 .form-group label {
@@ -23,22 +23,29 @@
 }
 
 .form-group input {
-    width: 100%;
+    width: calc(100% - 22px);
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.btn {
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
     background-color: #007bff;
     color: #fff;
-    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
-.btn:hover {
+button[type="submit"]:hover {
     background-color: #0056b3;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
 }

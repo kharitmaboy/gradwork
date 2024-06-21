@@ -1,15 +1,38 @@
-import React, { useState } from 'react';
+// Login.js
+import React, { useState, useContext } from 'react';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../AuthContext';
 import './Login.css';
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const { setIsAuthenticated } = useContext(AuthContext);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Здесь вы можете добавить обработку авторизации
-        console.log('Username:', username);
-        console.log('Password:', password);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        const response = await fetch('/auth/sign-in', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            Cookies.set('access_token', data.token);
+            setIsAuthenticated(true);
+            navigate('/');
+        } else {
+            const errorData = await response.json();
+            setError(errorData.message || 'Ошибка входа');
+        }
     };
 
     return (
@@ -36,7 +59,8 @@ function Login() {
                         required
                     />
                 </div>
-                <button type="submit" className="btn">Войти</button>
+                {error && <div className="error">{error}</div>}
+                <button type="submit">Войти</button>
             </form>
         </div>
     );

@@ -46,3 +46,13 @@ header .login-btn .btn {
 header .login-btn .btn:hover {
     background-color: #e74c3c;
 }
+
+button {
+    color: #fff;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 858px;
+}
