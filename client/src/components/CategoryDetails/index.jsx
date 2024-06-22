@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import {useLocation, useParams, Link} from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import {useLocation, useParams, Link, useNavigate} from 'react-router-dom';
+import AuthContext from "../../AuthContext";
 import './CategoryDetails.css';
+import {jwtDecode} from "jwt-decode";
+import Cookies from "js-cookie";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
 function CategoryDetails() {
     const {categoryId} = useParams();
+    const navigate = useNavigate();
     const location = useLocation();
     const [article, setArticle] = useState([]);
     const [category, setCategory] = useState({
         name: location.state?.name || '',
     });
+    const { isAuthenticated } = useContext(AuthContext);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         if (!location.state) {
@@ -26,7 +34,35 @@ function CategoryDetails() {
                 .then(data => setArticle(data))
                 .catch(error => console.error('Error fetching course details:', error));
         }
+
+        const token = Cookies.get('access_token');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.status === 'admin') {
+                setIsAdmin(true);
+            }
+        }
     }, [categoryId, location.state]);
+
+    const handleDelete = async () => {
+        if (window.confirm('Вы уверены, что хотите удалить этот раздел?')) {
+            try {
+                const response = await fetch(`/admin/categories/${categoryId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('access_token')}`
+                    }
+                });
+                if (response.ok) {
+                    navigate(`/`);
+                } else {
+                    console.error('Ошибка при удалении раздела');
+                }
+            } catch (error) {
+                console.error('Ошибка при удалении раздела', error);
+            }
+        }
+    };
 
     if (!category) {
         return <div>Загрузка...</div>;
@@ -35,6 +71,16 @@ function CategoryDetails() {
     return (
         <div className="section-details-container">
             <h2>{category.name}</h2>
+            {isAdmin && isAuthenticated && (
+                <div className="section-actions">
+                    <button onClick={() => navigate(`/category-edit/${categoryId}`)} className="edit-button-ctg">
+                        <FontAwesomeIcon icon={faEdit} />
+                    </button>
+                    <button onClick={handleDelete} className="delete-button-ctg">
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
+                </div>
+            )}
             <ul>
                 {article.map(article => (
                     <li key={article.id} className="article">

@@ -1,8 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+import {Link} from "react-router-dom";
 import Course from '../Course';
 import './Courses.css';
+import {jwtDecode} from "jwt-decode";
+import Cookies from "js-cookie";
+import AuthContext from "../../AuthContext";
 
 function Courses() {
+    const { isAuthenticated } = useContext(AuthContext);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
@@ -12,6 +18,14 @@ function Courses() {
                 setCourses(data);
             })
             .catch(error => console.error('Error fetching courses:', error));
+
+        const token = Cookies.get('access_token');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.status === 'admin') {
+                setIsAdmin(true);
+            }
+        }
     }, []);
 
     return (
@@ -23,6 +37,11 @@ function Courses() {
                         <Course key={course.id} id={course.id} name={course.name} description={course.description}/>
                     ))}
                 </div>
+                {isAdmin && isAuthenticated && (
+                    <Link to="/course-edit" className="add-course-button">
+                        Добавить курс
+                    </Link>
+                )}
             </div>
         </main>
     );

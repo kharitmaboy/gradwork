@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import AuthContext from '../../AuthContext';
 import Cookies from 'js-cookie';
 import './Header.css';
@@ -7,9 +7,12 @@ import './Header.css';
 function Header() {
     const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
 
+    const navigate = useNavigate()
+
     const handleLogout = () => {
         Cookies.remove('access_token');
         setIsAuthenticated(false);
+        navigate("/")
     };
 
     return (
@@ -23,7 +26,7 @@ function Header() {
                             <>
                                 <li><Link to="/profile">Личный кабинет</Link></li>
                                 <li>
-                                    <button onClick={handleLogout}>Выйти</button>
+                                    <button className="header-btn" onClick={handleLogout}>Выйти</button>
                                 </li>
                             </>
                         ) : (

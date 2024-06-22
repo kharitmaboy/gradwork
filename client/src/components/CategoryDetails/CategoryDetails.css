@@ -27,3 +27,26 @@
 .article h4 {
     margin-top: 0;
 }
+
+.edit-button-ctg,
+.delete-button-ctg {
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    font-size: 16px;
+    color: #bebebe;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button-ctg:hover {
+    color: #007bff;
+    background-color: #fff; /* синий при наведении */
+}
+
+.delete-button-ctg:hover {
+    color: #dc3545;
+    background-color: #fff; /* красный при наведении */
+}
