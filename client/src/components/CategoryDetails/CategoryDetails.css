@@ -28,6 +28,7 @@
     margin-top: 0;
 }
 
+.add-article-button,
 .edit-button-ctg,
 .delete-button-ctg {
     align-items: center;
@@ -49,4 +50,21 @@
 .delete-button-ctg:hover {
     color: #dc3545;
     background-color: #fff; /* красный при наведении */
+}
+
+.add-article-button {
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.add-article-button:hover {
+    background-color: #218838;
 }

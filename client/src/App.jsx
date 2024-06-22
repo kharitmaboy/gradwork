@@ -11,6 +11,8 @@ import AddCategory from "./components/AddCategory";
 import AddCourse from "./components/AddCourse";
 import EditCourse from "./components/EditCourse";
 import EditCategory from "./components/EditCategory";
+import AddArticle from "./components/AddArticle";
+import EditArticle from "./components/EditArticle";
 
 function App() {
     return (
@@ -24,10 +26,12 @@ function App() {
                     <Route path="/articles/:articleId" element={<Article/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/courses/:courseId/category-edit" element={<AddCategory/>} />
-                    <Route path="/course-edit" element={<AddCourse/>} />
-                    <Route path="/course-edit/:courseId" element={<EditCourse/>} />
-                    <Route path="/category-edit/:categoryId" element={<EditCategory/>} />
+                    <Route path="/courses/:courseId/category-edit" element={<AddCategory/>}/>
+                    <Route path="/course-edit" element={<AddCourse/>}/>
+                    <Route path="/course-edit/:courseId" element={<EditCourse/>}/>
+                    <Route path="/category-edit/:categoryId" element={<EditCategory/>}/>
+                    <Route path="/categories/:categoryId/article-edit" element={<AddArticle/>}/>
+                    <Route path="/article-edit/:articleId" element={<EditArticle/>}/>
                 </Routes>
             </AuthProvider>
         </div>

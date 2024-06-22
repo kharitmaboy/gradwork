@@ -29,3 +29,183 @@
     border-radius: 5px;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.article-content p {
+    margin-bottom: 10px;
+}
+
+/* Стили для таблиц */
+.article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.article-content table,
+.article-content th,
+.article-content td {
+    border: 1px solid #ddd;
+}
+
+.article-content th,
+.article-content td {
+    padding: 8px;
+    text-align: left;
+}
+
+.article-content th {
+    background-color: #f4f4f4;
+}
+
+/* Стили для блоков цитирования */
+.article-content blockquote {
+    margin: 20px 0;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border-left: 5px solid #ccc;
+    font-style: italic;
+    color: #666;
+}
+
+.article-content blockquote p {
+    margin: 0;
+}
+
+/* Стили для кода */
+.article-content pre,
+.article-content code {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: auto;
+}
+
+.article-content pre {
+    margin: 20px 0;
+    padding: 20px;
+}
+
+/* Стили для списков */
+.article-content ul,
+.article-content ol {
+    margin: 10px 0 20px 20px;
+}
+
+.article-content ul li,
+.article-content ol li {
+    margin-bottom: 5px;
+}
+
+/* Стили для изображений */
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px 0;
+}
+
+/* Стили для ссылок */
+.article-content a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.article-content a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для горизонтальной линии */
+.article-content hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+/* Стили для выделенного текста */
+.article-content strong {
+    font-weight: bold;
+}
+
+/* Стили для тега figure */
+.article-content figure {
+    display: block;
+    margin: 0 0 20px;
+    padding: 0;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    padding: 10px;
+}
+
+.article-content figure img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.article-content figcaption {
+    margin-top: 10px;
+    font-style: italic;
+    color: #666;
+    text-align: center;
+}
+
+.article-content oembed {
+    display: block;
+    max-width: 100%;
+    margin: 20px 0;
+}
+
+.article-content oembed iframe {
+    width: 100%;
+    height: auto;
+}
+
+/* Стили для встраиваемого видео */
+.article-content iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px 0;
+}
+
+.edit-btn-article,
+.delete-btn-article {
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    font-size: 16px;
+    color: #bebebe;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-btn-article:hover {
+    color: #007bff;
+    background-color: #fff; /* синий при наведении */
+}
+
+.delete-btn-article:hover {
+    color: #dc3545;
+    background-color: #fff; /* красный при наведении */
+}
+
+.article-info {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 10px;
+}

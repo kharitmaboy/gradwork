@@ -40,6 +40,7 @@ type Article interface {
 	GetArticleById(articleId int) (gradwork.Article, error)
 	GetSelfArticles(userId int) ([]gradwork.Article, error)
 	GetArticlesInCategory(categoryId int) ([]gradwork.Article, error)
+	GetArticleAuthorName(articleId int) (string, error)
 	CreateArticle(userId int, article gradwork.Article) (int, error)
 	UpdateArticle(articleId int, input gradwork.UpdateArticleInput) error
 	UpdateSelfArticle(articleId, userId int, input gradwork.UpdateArticleInput) error

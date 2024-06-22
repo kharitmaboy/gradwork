@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import {useLocation, useParams, Link, useNavigate} from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
+import {Link, useLocation, useNavigate, useParams} from 'react-router-dom';
 import AuthContext from "../../AuthContext";
 import './CategoryDetails.css';
 import {jwtDecode} from "jwt-decode";
@@ -15,7 +15,7 @@ function CategoryDetails() {
     const [category, setCategory] = useState({
         name: location.state?.name || '',
     });
-    const { isAuthenticated } = useContext(AuthContext);
+    const {isAuthenticated} = useContext(AuthContext);
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
@@ -64,6 +64,10 @@ function CategoryDetails() {
         }
     };
 
+    const handleAddArticle = () => {
+        navigate(`/categories/${categoryId}/article-edit`);
+    };
+
     if (!category) {
         return <div>Загрузка...</div>;
     }
@@ -74,10 +78,10 @@ function CategoryDetails() {
             {isAdmin && isAuthenticated && (
                 <div className="section-actions">
                     <button onClick={() => navigate(`/category-edit/${categoryId}`)} className="edit-button-ctg">
-                        <FontAwesomeIcon icon={faEdit} />
+                        <FontAwesomeIcon icon={faEdit}/>
                     </button>
                     <button onClick={handleDelete} className="delete-button-ctg">
-                        <FontAwesomeIcon icon={faTrashAlt} />
+                        <FontAwesomeIcon icon={faTrashAlt}/>
                     </button>
                 </div>
             )}
@@ -90,6 +94,11 @@ function CategoryDetails() {
                     </li>
                 ))}
             </ul>
+            {isAdmin && isAuthenticated && (
+                <button onClick={handleAddArticle} className="add-article-button">
+                    Добавить статью
+                </button>
+            )}
         </div>
     );
 }

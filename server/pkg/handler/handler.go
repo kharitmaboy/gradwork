@@ -93,6 +93,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		articles.GET("/", h.getArticles)
 		articles.GET("/:id", h.getArticleById)
+		articles.GET("/:id/author", h.getArticleAuthorName)
 	}
 
 	return router

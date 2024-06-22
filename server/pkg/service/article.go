@@ -29,6 +29,10 @@ func (s *ArticleService) GetArticlesInCategory(categoryId int) ([]gradwork.Artic
 	return s.repos.GetArticlesInCategory(categoryId)
 }
 
+func (s *ArticleService) GetArticleAuthorName(articleId int) (string, error) {
+	return s.repos.GetArticleAuthorName(articleId)
+}
+
 func (s *ArticleService) CreateArticle(userId int, article gradwork.Article) (int, error) {
 	return s.repos.CreateArticle(userId, article)
 }

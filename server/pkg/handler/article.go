@@ -64,6 +64,22 @@ func (h *Handler) getArticlesInCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, articles)
 }
 
+func (h *Handler) getArticleAuthorName(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "article not found")
+		return
+	}
+
+	author, err := h.services.Article.GetArticleAuthorName(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, author)
+}
+
 func (h *Handler) createArticle(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {

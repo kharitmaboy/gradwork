@@ -54,6 +54,16 @@ func (r *ArticlePostgres) GetArticlesInCategory(categoryId int) ([]gradwork.Arti
 	return articles, err
 }
 
+func (r *ArticlePostgres) GetArticleAuthorName(articleId int) (string, error) {
+	var authorName string
+
+	query := fmt.Sprintf(`SELECT u.name FROM %s u INNER JOIN %s a ON a.user_id = u.id
+    						WHERE a.id = $1`, usersTable, articlesTable)
+	err := r.db.Get(&authorName, query, articleId)
+
+	return authorName, err
+}
+
 func (r *ArticlePostgres) CreateArticle(userId int, article gradwork.Article) (int, error) {
 	var id int
 
