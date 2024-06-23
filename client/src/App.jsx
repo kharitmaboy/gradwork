@@ -13,6 +13,8 @@ import EditCourse from "./components/EditCourse";
 import EditCategory from "./components/EditCategory";
 import AddArticle from "./components/AddArticle";
 import EditArticle from "./components/EditArticle";
+import CreateUser from "./components/CreateUser";
+import EditUser from "./components/EditUser";
 
 function App() {
     return (
@@ -32,6 +34,8 @@ function App() {
                     <Route path="/category-edit/:categoryId" element={<EditCategory/>}/>
                     <Route path="/categories/:categoryId/article-edit" element={<AddArticle/>}/>
                     <Route path="/article-edit/:articleId" element={<EditArticle/>}/>
+                    <Route path="/create-user" element={<CreateUser/>}/>
+                    <Route path="/edit-user/:userId" element={<EditUser/>}/>
                 </Routes>
             </AuthProvider>
         </div>

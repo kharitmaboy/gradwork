@@ -67,3 +67,38 @@ button[type="submit"]:hover {
     padding: 10px;
     border-bottom: 1px solid #ccc;
 }
+
+.create-user-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.create-user-button:hover {
+    background-color: #0056b3;
+}
+
+.users-list {
+    list-style: none;
+    padding: 0;
+}
+
+.users-list li {
+    cursor: pointer;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.users-list li:hover {
+    background-color: #f0f0f0;
+}

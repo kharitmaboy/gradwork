@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import AuthContext from '../../AuthContext';
 import Cookies from 'js-cookie';
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import './Profile.css';
+import {useNavigate, Link} from "react-router-dom";
 
 const Profile = () => {
-    const { isAuthenticated } = useContext(AuthContext);
+    const {isAuthenticated} = useContext(AuthContext);
     const [user, setUser] = useState({
         username: '',
         email: '',
@@ -15,6 +16,7 @@ const Profile = () => {
     });
     const [usersList, setUsersList] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -28,14 +30,7 @@ const Profile = () => {
                         }
                     });
                     const data = await response.json();
-                    setUser({
-                        username: data.username,
-                        password: data.password,
-                        name: data.name,
-                        surname: data.surname,
-                        email: data.email,
-                        status: decodedToken.status,
-                    });
+                    setUser(data);
                     if (decodedToken.status === 'admin') {
                         setIsAdmin(true);
                         fetchUsersList();
@@ -64,21 +59,39 @@ const Profile = () => {
     }, []);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setUser((prevUser) => ({
             ...prevUser,
             [name]: value
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSaveClick = async (e) => {
         e.preventDefault();
         try {
-            // Запрос на обновление данных пользователя на сервере
-            console.log('Данные пользователя для отправки на сервер:', user);
+            const token = Cookies.get('access_token')
+            if (token) {
+                const response = await fetch(`/user`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${Cookies.get('access_token')}`
+                    },
+                    body: JSON.stringify(user)
+                });
+                if (response.ok) {
+                    navigate(`/profile`)
+                } else {
+                    console.error('Ошибка при сохранении данных');
+                }
+            }
         } catch (error) {
-            console.error('Ошибка при обновлении данных пользователя', error);
+            console.error('Ошибка при отправке запроса на сервер', error);
         }
+    };
+
+    const handleUserClick = (userId) => {
+        navigate(`/edit-user/${userId}`);
     };
 
     if (!isAuthenticated) {
@@ -88,7 +101,7 @@ const Profile = () => {
     return (
         <div className="profile-container">
             <h2>Личный кабинет</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSaveClick}>
                 <div className="form-group">
                     <label htmlFor="username">Имя пользователя:</label>
                     <input
@@ -105,7 +118,6 @@ const Profile = () => {
                         type="password"
                         id="password"
                         name="password"
-                        value={user.password}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -141,15 +153,20 @@ const Profile = () => {
                 </div>
                 <button type="submit">Сохранить изменения</button>
             </form>
-            {isAdmin && (
+            {isAdmin && isAuthenticated && (
                 <div className="admin-section">
                     <h3>Список пользователей</h3>
-                    <ul>
-                        {usersList.map((user, index) => (
-                            <li key={index}>{user.username} - {user.email}</li>
+                    <ul className="users-list">
+                        {usersList.map(user => (
+                            <li key={user.id} onClick={() => handleUserClick(user.id)}>
+                                {user.username} - {user.name}
+                            </li>
                         ))}
                     </ul>
                 </div>
+            )}
+            {isAdmin && isAuthenticated && (
+                <Link to="/create-user" className="create-user-button">Создать пользователя</Link>
             )}
         </div>
     );

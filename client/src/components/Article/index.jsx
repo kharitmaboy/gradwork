@@ -9,12 +9,13 @@ import {jwtDecode} from "jwt-decode";
 import AuthContext from "../../AuthContext";
 
 function Article() {
-    const { articleId } = useParams();
+    const {articleId} = useParams();
     const [article, setArticle] = useState(null);
     const navigate = useNavigate();
     const {isAuthenticated} = useContext(AuthContext);
     const [isAdmin, setIsAdmin] = useState(false);
     const [authorName, setAuthorName] = useState('');
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         fetch(`/articles/${articleId}`)
@@ -25,6 +26,7 @@ function Article() {
         const token = Cookies.get('access_token');
         if (token) {
             const decodedToken = jwtDecode(token);
+            setUserId(decodedToken.user_id)
             if (decodedToken.status === 'admin') {
                 setIsAdmin(true);
             }
@@ -41,17 +43,32 @@ function Article() {
     };
 
     const handleDelete = async () => {
-        try {
-            await fetch(`/admin/articles/${articleId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${Cookies.get('access_token')}` // Предположим, что токен хранится в localStorage
-                }
-            });
-            navigate(`/`); // Перенаправить на страницу со списком статей после удаления
-        } catch (error) {
-            console.error('Ошибка при удалении статьи', error);
+        if (userId === article.user_id) {
+            try {
+                await fetch(`/user/articles/${articleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${Cookies.get('access_token')}` // Предположим, что токен хранится в localStorage
+                    }
+                });
+                navigate(`/`); // Перенаправить на страницу со списком статей после удаления
+            } catch (error) {
+                console.error('Ошибка при удалении статьи', error);
+            }
+        } else {
+            try {
+                await fetch(`/admin/articles/${articleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${Cookies.get('access_token')}` // Предположим, что токен хранится в localStorage
+                    }
+                });
+                navigate(`/`); // Перенаправить на страницу со списком статей после удаления
+            } catch (error) {
+                console.error('Ошибка при удалении статьи', error);
+            }
         }
     };
 
@@ -65,7 +82,7 @@ function Article() {
             <p className="article-info">
                 Автор: {authorName} | Дата создания: {new Date(article.date).toLocaleDateString()}
             </p>
-            {isAdmin && isAuthenticated && (
+            {(isAdmin || userId === article.user_id) && isAuthenticated && (
                 <div className="article-actions">
                     <button className="edit-btn-article" onClick={handleEdit}>
                         <FontAwesomeIcon icon={faEdit}/>

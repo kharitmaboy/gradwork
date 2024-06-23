@@ -94,7 +94,7 @@ function CategoryDetails() {
                     </li>
                 ))}
             </ul>
-            {isAdmin && isAuthenticated && (
+            {isAuthenticated && (
                 <button onClick={handleAddArticle} className="add-article-button">
                     Добавить статью
                 </button>

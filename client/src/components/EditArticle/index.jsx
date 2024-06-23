@@ -4,18 +4,23 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import '../AddArticle/AddArticle.css'
 import Cookies from "js-cookie";
+import {jwtDecode} from "jwt-decode";
 
 const EditArticle = () => {
     const { articleId } = useParams();
     const navigate = useNavigate();
-    const [article, setArticle] = useState({
-        title: '',
-        body: ''
-    });
+    const [article, setArticle] = useState([]);
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         const fetchArticle = async () => {
             try {
+                const token = Cookies.get('access_token');
+                if (token) {
+                    const decodedToken = jwtDecode(token);
+                    setUserId(decodedToken.user_id)
+                }
+
                 const response = await fetch(`/articles/${articleId}`);
                 const data = await response.json();
                 setArticle(data);
@@ -29,14 +34,25 @@ const EditArticle = () => {
 
     const handleSave = async () => {
         try {
-            await fetch(`/admin/articles/${articleId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${Cookies.get('access_token')}`
-                },
-                body: JSON.stringify(article)
-            });
+            if (userId === article.user_id) {
+                await fetch(`/user/articles/${articleId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${Cookies.get('access_token')}`
+                    },
+                    body: JSON.stringify(article)
+                });
+            } else {
+                await fetch(`/admin/articles/${articleId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${Cookies.get('access_token')}`
+                    },
+                    body: JSON.stringify(article)
+                });
+            }
             navigate(`/articles/${articleId}`);
         } catch (error) {
             console.error('Ошибка при сохранении статьи', error);
@@ -49,7 +65,7 @@ const EditArticle = () => {
             <input
                 type="text"
                 value={article.title}
-                onChange={(e) => setArticle({...article, title: e.target.value})}
+                onChange={(e) => setArticle(prevArticle => ({...prevArticle, title: e.target.value}))}
                 placeholder="Заголовок статьи"
                 className="article-title-input"
             />
@@ -58,7 +74,7 @@ const EditArticle = () => {
                 data={article.body}
                 onChange={(event, editor) => {
                     const data = editor.getData();
-                    setArticle({...article, body: data});
+                    setArticle(prevArticle => ({...prevArticle, body: data}));
                 }}
             />
             <button type="submit" className="save-article-button" onClick={handleSave}>

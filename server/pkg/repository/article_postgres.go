@@ -123,7 +123,7 @@ func (r *ArticlePostgres) UpdateSelfArticle(articleId, userId int, input gradwor
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s a SET %s WHERE a.id = $%d && a.user_id = $%d", articlesTable, setQuery, argId, argId+1)
+	query := fmt.Sprintf("UPDATE %s a SET %s WHERE a.id = $%d AND a.user_id = $%d", articlesTable, setQuery, argId, argId+1)
 	args = append(args, articleId, userId)
 
 	_, err := r.db.Exec(query, args...)
@@ -138,7 +138,7 @@ func (r *ArticlePostgres) DeleteArticle(articleId int) error {
 }
 
 func (r *ArticlePostgres) DeleteSelfArticle(articleId, userId int) error {
-	query := fmt.Sprintf("DELETE FROM %s a WHERE a.id = $1 && a.user_id = $2", articlesTable)
+	query := fmt.Sprintf("DELETE FROM %s a WHERE a.id = $1 AND a.user_id = $2", articlesTable)
 	_, err := r.db.Exec(query, articleId, userId)
 
 	return err
