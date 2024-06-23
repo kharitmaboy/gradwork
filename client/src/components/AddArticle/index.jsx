@@ -26,7 +26,7 @@ const AddArticle = () => {
                 const articleData = {
                     title,
                     body,
-                    date: 1719078921,
+                    date: parseInt(Date.now()/1000),
                     user_id: userId,
                     category_id: parseInt(categoryId),
                 };

@@ -80,7 +80,7 @@ function Article() {
         <div className="article-container">
             <h2>{article.title}</h2>
             <p className="article-info">
-                Автор: {authorName} | Дата создания: {new Date(article.date).toLocaleDateString()}
+                Автор: {authorName} | Дата создания: {new Date(article.date * 1000).toLocaleDateString()}
             </p>
             {(isAdmin || userId === article.user_id) && isAuthenticated && (
                 <div className="article-actions">
