@@ -17,6 +17,7 @@ const Profile = () => {
     const [usersList, setUsersList] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
+    const [articles, setArticles] = useState([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -55,7 +56,22 @@ const Profile = () => {
             }
         };
 
+        const fetchArticles = async () => {
+            try {
+                const response = await fetch('/user/articles', {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('access_token')}`
+                    }
+                });
+                const data = await response.json();
+                setArticles(data);
+            } catch (error) {
+                console.error('Ошибка при загрузке списка пользователей', error);
+            }
+        };
+
         fetchUserData();
+        fetchArticles();
     }, []);
 
     const handleInputChange = (e) => {
@@ -92,6 +108,10 @@ const Profile = () => {
 
     const handleUserClick = (userId) => {
         navigate(`/edit-user/${userId}`);
+    };
+
+    const handleArticleClick = (articleId) => {
+        navigate(`/articles/${articleId}`);
     };
 
     if (!isAuthenticated) {
@@ -167,6 +187,18 @@ const Profile = () => {
             )}
             {isAdmin && isAuthenticated && (
                 <Link to="/create-user" className="create-user-button">Создать пользователя</Link>
+            )}
+            {!isAdmin && isAuthenticated && (
+                <div className="admin-section">
+                    <h3>Мои статьи</h3>
+                    <ul className="users-list">
+                        {articles.map(article => (
+                            <li key={article.id} onClick={() => handleArticleClick(article.id)}>
+                                {article.title}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             )}
         </div>
     );
