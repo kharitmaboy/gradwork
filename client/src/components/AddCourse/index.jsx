@@ -46,6 +46,7 @@ const AddCourse = () => {
                         type="text"
                         id="name"
                         name="name"
+                        required={true}
                         value={course.name}
                         onChange={handleInputChange}
                     />

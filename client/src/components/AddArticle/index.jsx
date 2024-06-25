@@ -62,6 +62,7 @@ const AddArticle = () => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Заголовок статьи"
+                        required={true}
                         className="article-title-input"
                     />
                     <CKEditor
