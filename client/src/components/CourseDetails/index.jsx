@@ -58,7 +58,7 @@ function CourseDetails() {
                     }
                 });
                 if (response.ok) {
-                    navigate('/courses');
+                    navigate('/');
                 } else {
                     console.error('Ошибка при удалении курса');
                 }
@@ -88,9 +88,9 @@ function CourseDetails() {
             )}
             <h3>Разделы курса</h3>
             <ul>
-                {category.map(category => (
+                {category && (category.map(category => (
                     <Category id={category.id} name={category.name}/>
-                ))}
+                )))}
             </ul>
             {isAdmin && isAuthenticated && (
                 <Link to={`/courses/${courseId}/category-edit`} className="add-section-button">

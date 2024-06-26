@@ -7,13 +7,7 @@ import {useNavigate, Link} from "react-router-dom";
 
 const Profile = () => {
     const {isAuthenticated} = useContext(AuthContext);
-    const [user, setUser] = useState({
-        username: '',
-        email: '',
-        firstName: '',
-        lastName: '',
-        status: ''
-    });
+    const [user, setUser] = useState([]);
     const [usersList, setUsersList] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
@@ -128,6 +122,7 @@ const Profile = () => {
                         type="text"
                         id="username"
                         name="username"
+                        required={true}
                         value={user.username}
                         onChange={handleInputChange}
                     />
@@ -138,6 +133,8 @@ const Profile = () => {
                         type="password"
                         id="password"
                         name="password"
+                        value={''}
+                        required={true}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -177,11 +174,11 @@ const Profile = () => {
                 <div className="admin-section">
                     <h3>Список пользователей</h3>
                     <ul className="users-list">
-                        {usersList.map(user => (
+                        {usersList && (usersList.map(user => (
                             <li key={user.id} onClick={() => handleUserClick(user.id)}>
                                 {user.username} - {user.name}
                             </li>
-                        ))}
+                        )))}
                     </ul>
                 </div>
             )}
@@ -192,11 +189,11 @@ const Profile = () => {
                 <div className="admin-section">
                     <h3>Мои статьи</h3>
                     <ul className="users-list">
-                        {articles.map(article => (
+                        {articles && (articles.map(article => (
                             <li key={article.id} onClick={() => handleArticleClick(article.id)}>
                                 {article.title}
                             </li>
-                        ))}
+                        )))}
                     </ul>
                 </div>
             )}

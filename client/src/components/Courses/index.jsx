@@ -33,9 +33,9 @@ function Courses() {
             <div>
                 <h2>Доступные курсы</h2>
                 <div className="course-list">
-                    {courses.map(course => (
+                    {courses && ( courses.map(course => (
                         <Course key={course.id} id={course.id} name={course.name} description={course.description}/>
-                    ))}
+                    )))}
                 </div>
                 {isAdmin && isAuthenticated && (
                     <Link to="/course-edit" className="add-course-button">

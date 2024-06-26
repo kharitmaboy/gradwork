@@ -56,6 +56,7 @@ const AddCourse = () => {
                     <textarea
                         id="description"
                         name="description"
+                        required={true}
                         value={course.description}
                         onChange={handleInputChange}
                     />

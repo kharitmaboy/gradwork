@@ -61,6 +61,7 @@ const EditCourse = () => {
                         type="text"
                         id="name"
                         name="name"
+                        required={true}
                         value={course.name}
                         onChange={handleInputChange}
                     />
@@ -70,6 +71,7 @@ const EditCourse = () => {
                     <textarea
                         id="description"
                         name="description"
+                        required={true}
                         value={course.description}
                         onChange={handleInputChange}
                     />

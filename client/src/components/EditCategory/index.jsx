@@ -61,6 +61,7 @@ const EditCategory = () => {
                         type="text"
                         id="name"
                         name="name"
+                        required={true}
                         value={category.name}
                         onChange={handleInputChange}
                     />

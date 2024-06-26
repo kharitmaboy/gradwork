@@ -30,8 +30,7 @@ function Login() {
             setIsAuthenticated(true);
             navigate('/');
         } else {
-            const errorData = await response.json();
-            setError(errorData.message || 'Ошибка входа');
+            setError( 'Неверный логин или пароль');
         }
     };
 

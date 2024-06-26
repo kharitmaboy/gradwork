@@ -4,6 +4,9 @@ build:
 run:
 	go run cmd/app/main.go
 
+ngrok:
+	ngrok http --domain suitably-real-stork.ngrok-free.app --host-header=rewrite 3000
+
 migrate:
 	migrate -path ./schema -database 'postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable' up
 

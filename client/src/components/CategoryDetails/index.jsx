@@ -86,13 +86,13 @@ function CategoryDetails() {
                 </div>
             )}
             <ul>
-                {article.map(article => (
+                {article && (article.map(article => (
                     <li key={article.id} className="article">
                         <Link to={`/articles/${article.id}`}>
                             <h4>{article.title}</h4>
                         </Link>
                     </li>
-                ))}
+                )))}
             </ul>
             {isAuthenticated && (
                 <button onClick={handleAddArticle} className="add-article-button">

@@ -72,6 +72,7 @@ const EditUser = () => {
                     type="text"
                     id="username"
                     name="username"
+                    required={true}
                     value={userData.username}
                     onChange={handleInputChange}
                 />
@@ -80,6 +81,8 @@ const EditUser = () => {
                     type="text"
                     id="password"
                     name="password"
+                    required={true}
+                    value={''}
                     onChange={handleInputChange}
                 />
                 <label htmlFor="name">Имя:</label>

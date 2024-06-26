@@ -31,6 +31,11 @@ const AddArticle = () => {
                     category_id: parseInt(categoryId),
                 };
 
+                if (!articleData.body || articleData.body.trim() === '') {
+                    alert('Необходимо заполнить содержимое');
+                    return
+                }
+
                 const response = await fetch(`/user/articles`, {
                     method: 'POST',
                     headers: {

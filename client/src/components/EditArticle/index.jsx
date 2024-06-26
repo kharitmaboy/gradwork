@@ -34,6 +34,11 @@ const EditArticle = () => {
 
     const handleSave = async () => {
         try {
+            if (!article.body || article.body.trim() === '') {
+                alert('Необходимо заполнить содержимое');
+                return
+            }
+
             if (userId === article.user_id) {
                 await fetch(`/user/articles/${articleId}`, {
                     method: 'PATCH',
@@ -64,6 +69,7 @@ const EditArticle = () => {
             <h1>Редактировать статью</h1>
             <input
                 type="text"
+                required={true}
                 value={article.title}
                 onChange={(e) => setArticle(prevArticle => ({...prevArticle, title: e.target.value}))}
                 placeholder="Заголовок статьи"
