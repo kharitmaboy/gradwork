@@ -21,14 +21,14 @@ CREATE TABLE courses
 CREATE TABLE categories
 (
     id        serial                                        not null unique,
-    name      varchar(255)                                  not null unique,
+    name      varchar(255)                                  not null,
     course_id int references courses (id) on delete cascade not null
 );
 
 CREATE TABLE articles
 (
     id          serial                                           not null unique,
-    title       varchar(255)                                     not null unique,
+    title       varchar(255)                                     not null,
     body        varchar                                          not null,
     date        timestamp,
     user_id     int references users (id) on delete cascade      not null,
